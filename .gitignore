@@ -1,0 +1,6 @@
+.vscode/*
+React_Folder/reacapp/node_modules/*
+React_Folder/reacapp/public/*
+debug
+debug~
+reactgo.exe
