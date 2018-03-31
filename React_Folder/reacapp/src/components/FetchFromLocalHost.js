@@ -11,7 +11,7 @@ class FetchFromLocalHost extends React.Component {
     };
   }
 
-  render() {
+  ComponentDidMount() {
     console.log("requesting");
     axios.get(`http://localhost:8080/${this.props.substring}`)
       .then(res => {
@@ -21,7 +21,10 @@ class FetchFromLocalHost extends React.Component {
         const posts = res.data;
         this.setState({ posts });
       });
+  }
 
+  render() {
+    this.ComponentDidMount();
     return (    
       <div>
         <p>{this.state.posts}</p>
