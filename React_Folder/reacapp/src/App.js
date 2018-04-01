@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import FetchFromLocalHost from './components/FetchFromLocalHost.js'
 import { BrowserRouter,Switch, Route, Link } from 'react-router-dom'
+import Login from './components/Login'
 
 class App extends Component {
   render() {
@@ -15,8 +16,8 @@ class App extends Component {
                     exact path="/"
                     render={()=><FetchFromLocalHost substring="home"/>} />
                   <Route
-                    path="/contact"
-                    render={()=><FetchFromLocalHost substring="Contact"/>} />
+                    path="/login"
+                    render={()=><Login/>} />
                   <Route path="/blog" children={({match}) => (
                     <li className={match ? 'active' : ''}>
                       <Link to="/blog">Blog</Link>
