@@ -1,13 +1,17 @@
 package gorrilaRouter
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"strings"
 
+	"github.com/GoRockypt/FunToLearn/GoSupport"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"golang.org/x/crypto/bcrypt"
 )
 
 //HomeHandler H
@@ -22,16 +26,21 @@ func HandleUserPass(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	UserName := vars["username"]
 	PassWord := vars["password"]
-	fmt.Fprint(w, UserName)
-	fmt.Fprintln(w, PassWord)
 
-	//hasing
-	bytes, err := bcrypt.GenerateFromPassword([]byte(PassWord), 14)
-	if err == nil {
-		log.Println("hash not done")
+	//import "crypto/sha256"
+	h := sha256.New()
+	io.WriteString(h, PassWord)
+
+	//Encode the password to hex to save in the DB
+	encodedStr := hex.EncodeToString(h.Sum(nil))
+	log.Print(encodedStr)
+
+	//Let's see if the password matches
+	HashedPass := godb.DBQueryUserName(UserName)
+
+	if strings.Compare(encodedStr, HashedPass) == 0 {
+		fmt.Fprintln(w, "Login success")
 	}
-
-	fmt.Fprintln(w, string(bytes))
 }
 
 //AnyPostMethod C

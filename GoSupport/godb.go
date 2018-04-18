@@ -3,9 +3,15 @@ package godb
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql" //Driver
 )
+
+//UserInfo struct to connect user info DB
+type UserInfo struct {
+	UserID, Hash string
+}
 
 //DbOpen function to open a connection
 func DbOpen() {
@@ -53,4 +59,21 @@ func DbOpen() {
 		fmt.Println(err) // proper error handling instead of panic in your app
 	}
 	fmt.Printf("The square number of 1 is: %d", squareNum)
+}
+
+//DBQueryUserName Check if userName checks out
+func DBQueryUserName(UserName string) string {
+
+	db, err := sql.Open("mysql", "admin:A1s1D2f2@tcp(127.0.0.1:3306)/")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer db.Close()
+
+	var data UserInfo
+	err = db.QueryRow("SELECT * FROM user_data.userinfo WHERE UserID = ?", UserName).Scan(&data.UserID, &data.Hash)
+
+	log.Print(data.Hash)
+
+	return data.Hash
 }
