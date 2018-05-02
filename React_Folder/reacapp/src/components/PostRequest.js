@@ -1,33 +1,15 @@
-import WebRequest from 'web-request'
-// import rp from 'request'
-
-export default async function VarifyLoginCred(sUrl) {
-  
-  var None = "";
+export default function VarifyLoginCred(sUrl) {
   var LoggedIn = false;
-  var result = await WebRequest.post("http://localhost:8080/"+sUrl, null, None);
-  console.log("This is from web request: "+ result.content);
-  console.log(result);
-  if(result.content === 'LoggedIn\n') LoggedIn = true;
-  console.log("this is after responce:" +LoggedIn);
+  var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          if(this.responseText === "LoggedIn\n") LoggedIn = true;
+       }
+    };
+
+  xhttp.open("POST", "http://localhost:8080"+sUrl, false);
+  xhttp.send(); 
+
   return LoggedIn
-
-  // var options = {
-  //   method: 'POST',
-  //   uri: "http://localhost:8080/"+sUrl,
-  //   headers: {
-  //       /* 'content-type': 'application/x-www-form-urlencoded' */ // Is set automatically
-  //   }
-  // };
-
-  // rp(options)
-  //     .then(function (body) {
-  //       console.log(body);
-  //         // POST succeeded...
-  //     })
-  //     .catch(function (err) {
-  //         // POST failed...
-  //   });
-
 
 }

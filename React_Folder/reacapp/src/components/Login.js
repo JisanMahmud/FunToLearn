@@ -14,7 +14,7 @@ class Login extends Component{
         };
     }
 
-    handleSubmit= (event)=> {
+    handleSubmit= async (event)=> {
         event.preventDefault();
         console.log(event)
         console.log(this.state.email)
@@ -23,7 +23,7 @@ class Login extends Component{
         var param = '/user/'+this.state.email+'/pass/'+this.state.password
         console.log(param)
 
-        var LoggedIn = VarifyLoginCred(param)
+        var LoggedIn = await VarifyLoginCred(param)
         console.log("submited result" +LoggedIn)
     }
 
