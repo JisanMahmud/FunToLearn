@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import VarifyLoginCred from './PostRequest.js'
 
 class Login extends Component{
     constructor(props){
@@ -15,12 +16,18 @@ class Login extends Component{
 
     handleSubmit= (event)=> {
         event.preventDefault();
+        console.log(event)
         console.log(this.state.email)
         console.log(this.state.password)
+      
+        var param = '/user/'+this.state.email+'/pass/'+this.state.password
+        console.log(param)
+
+        var LoggedIn = VarifyLoginCred(param)
+        console.log("submited result" +LoggedIn)
     }
 
     handleChangeEmail = (event) => {
-
         console.log(event.target.value)
         this.setState({
           email: event.target.value
@@ -44,7 +51,7 @@ class Login extends Component{
             <ControlLabel>Email</ControlLabel>
             <FormControl
               autoFocus
-              type="email"
+              type="Input"
               value={this.state.email}
               onChange={this.handleChangeEmail}
             />
