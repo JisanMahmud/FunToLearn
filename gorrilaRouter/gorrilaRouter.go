@@ -39,7 +39,9 @@ func HandleUserPass(w http.ResponseWriter, r *http.Request) {
 	HashedPass := godb.DBQueryUserName(UserName)
 
 	if strings.Compare(encodedStr, HashedPass) == 0 {
-		fmt.Fprintln(w, "LoggedIn")
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
 	}
 }
 
