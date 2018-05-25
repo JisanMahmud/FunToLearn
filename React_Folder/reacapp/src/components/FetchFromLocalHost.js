@@ -27,7 +27,7 @@ class FetchFromLocalHost extends React.Component {
     this.ComponentDidMount();
     return (    
       <div>
-        <p>{this.state.posts}</p>
+        {this.state.posts}
       </div>
     );
   }

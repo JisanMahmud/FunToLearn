@@ -3,6 +3,7 @@ import './App.css';
 import FetchFromLocalHost from './components/FetchFromLocalHost.js'
 import { BrowserRouter,Switch, Route, Link } from 'react-router-dom'
 import Login from './components/Login'
+import Report from './components/Report'
 
 class App extends Component {
   render() {
@@ -18,6 +19,9 @@ class App extends Component {
                   <Route
                     path="/login"
                     render={()=><Login/>} />
+                  <Route
+                    path="/GetReport"
+                    render={()=><Report/>} />
                   <Route path="/blog" children={({match}) => (
                     <li className={match ? 'active' : ''}>
                       <Link to="/blog">Blog</Link>

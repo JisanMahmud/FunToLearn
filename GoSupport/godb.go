@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strconv"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql" //Driver
 )
@@ -11,6 +13,12 @@ import (
 //UserInfo struct to connect user info DB
 type UserInfo struct {
 	UserID, Hash string
+}
+
+//Actors tem db
+type Actors struct {
+	actorID                         int
+	firstName, lastName, lastUpdate string
 }
 
 //DbOpen function to open a connection
@@ -76,4 +84,37 @@ func DBQueryUserName(UserName string) string {
 	log.Print(data.Hash)
 
 	return data.Hash
+}
+
+//DBGetActorReport Check if userName checks out
+func DBGetActorReport() string {
+
+	db, err := sql.Open("mysql", "admin:A1s1D2f2@tcp(127.0.0.1:3306)/")
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	rows, err := db.Query("SELECT * FROM sakila.actor")
+
+	var data Actors
+	var JSONTable string
+
+	JSONTable = "{ \"Rows\":["
+	for rows.Next() {
+		if err := rows.Scan(&data.actorID, &data.firstName, &data.lastName, &data.lastUpdate); err != nil {
+			log.Fatal(err)
+			return "Failed"
+		}
+		JSONTable += "{"
+		JSONTable += "\"Field1\": \"" + strconv.Itoa(data.actorID) + "\","
+		JSONTable += "\"Field2\": \"" + strconv.Itoa(data.actorID) + "\","
+		JSONTable += "\"Field3\": \"" + data.firstName + "\","
+		JSONTable += "\"Field4\": \"" + data.lastName + "\","
+		JSONTable += "\"Field5\": \"" + data.lastUpdate + "\""
+		JSONTable += "},"
+	}
+
+	JSONTable = strings.TrimRight(JSONTable, ",")
+	JSONTable += "]}"
+	return JSONTable
 }
