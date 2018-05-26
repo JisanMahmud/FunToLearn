@@ -35,5 +35,5 @@ table tr:nth-child(odd) {
 }
 table th {
   color: white;
-  background-color: black;
+  background-color: grey;
 }

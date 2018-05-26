@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoRockypt/FunToLearn/goAPI"
 	_ "github.com/go-sql-driver/mysql" //Driver
 )
 
@@ -99,22 +100,25 @@ func DBGetActorReport() string {
 	var data Actors
 	var JSONTable string
 
-	JSONTable = "{ \"Rows\":["
 	for rows.Next() {
 		if err := rows.Scan(&data.actorID, &data.firstName, &data.lastName, &data.lastUpdate); err != nil {
 			log.Fatal(err)
 			return "Failed"
 		}
-		JSONTable += "{"
-		JSONTable += "\"Field1\": \"" + strconv.Itoa(data.actorID) + "\","
-		JSONTable += "\"Field2\": \"" + strconv.Itoa(data.actorID) + "\","
-		JSONTable += "\"Field3\": \"" + data.firstName + "\","
-		JSONTable += "\"Field4\": \"" + data.lastName + "\","
-		JSONTable += "\"Field5\": \"" + data.lastUpdate + "\""
-		JSONTable += "},"
+
+		var JSONRow string
+		JSONRow += goapi.AddJSONFieldAndData("Field1", strconv.Itoa(data.actorID)) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field2", strconv.Itoa(data.actorID)) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field3", data.firstName) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field4", data.lastName) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field5", data.lastUpdate)
+
+		JSONTable += goapi.SurroundWithChars("{", "}", JSONRow) + ","
 	}
 
 	JSONTable = strings.TrimRight(JSONTable, ",")
-	JSONTable += "]}"
+	JSONTable = goapi.SurroundWithQuote("Rows") + ":" + goapi.SurroundWithChars("[", "]", JSONTable)
+	JSONTable = goapi.SurroundWithChars("{", "}", JSONTable)
+
 	return JSONTable
 }
