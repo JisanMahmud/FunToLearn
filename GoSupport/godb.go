@@ -108,10 +108,9 @@ func DBGetActorReport() string {
 
 		var JSONRow string
 		JSONRow += goapi.AddJSONFieldAndData("Field1", strconv.Itoa(data.actorID)) + ","
-		JSONRow += goapi.AddJSONFieldAndData("Field2", strconv.Itoa(data.actorID)) + ","
-		JSONRow += goapi.AddJSONFieldAndData("Field3", data.firstName) + ","
-		JSONRow += goapi.AddJSONFieldAndData("Field4", data.lastName) + ","
-		JSONRow += goapi.AddJSONFieldAndData("Field5", data.lastUpdate)
+		JSONRow += goapi.AddJSONFieldAndData("Field2", data.firstName) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field3", data.lastName) + ","
+		JSONRow += goapi.AddJSONFieldAndData("Field4", data.lastUpdate)
 
 		JSONTable += goapi.SurroundWithChars("{", "}", JSONRow) + ","
 	}
